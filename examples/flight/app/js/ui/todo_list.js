@@ -3,12 +3,14 @@
 
 define([
 	'flight/lib/component',
-	'text!templates/todo.html',
+	//'text!templates/todo.html',
+	'jsx!app/components/TodoList',
 	'app/utils'
-], function (defineComponent, todoTmpl, utils) {
+], function (defineComponent, TodoList, utils) {
 	function todoList() {
 		var ENTER_KEY = 13;
-		var template = utils.tmpl(todoTmpl);
+		//var template = utils.tmpl(todoTmpl);
+		var ReactDom = require('react-dom');
 
 		this.attributes({
 			destroySelector: 'button.destroy',
@@ -18,10 +20,13 @@ define([
 		});
 
 		this.renderAll = function (e, data) {
-			this.$node.html('');
-			data.todos.forEach(function (each) {
+			//this.$node.html('');
+			/*data.todos.forEach(function (each) {
 				this.render(e, { todo: each });
-			}, this);
+			}, this);*/
+                        ReactDom.render(TodoList({
+                            todoItems: data.todos
+                        }), this.$node[0]);
 		};
 
 		this.render = function (e, data) {
@@ -29,7 +34,7 @@ define([
 				return;
 			}
 
-			this.$node.append(template(data.todo));
+                        this.$node.append(template(data.todo));
 		};
 
 		this.edit = function (e, data) {
